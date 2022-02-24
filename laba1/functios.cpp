@@ -52,43 +52,58 @@ int NumOfLines(char* name, int numLines) {
 
 void createNewFile(char* name, char* newname, int numLines)
 {
-	string line;
+	string line, text = "";
 	ifstream infile(name);
-	ofstream outFile(newname);
+	ofstream outfile(newname);
+	if (!infile || !outfile) {
+		cout << "\nOops! Cannot open the file.\n";
+	}
 	int pos = NumOfLines(name, numLines) - numLines, count = 0;
 	while (getline(infile, line)) {
-		if(pos<=count)
-			outFile << line << endl;
+		if (pos <= count) {
+			outfile << line;
+			if (!infile.eof())
+				outfile << endl;
+		}
 		count++;
 	}
-	cout << "\n New file:\n";
+	cout << "\n New file:";
+	outfile.close();
 	outputFile(newname);
 	infile.close();
-	outFile.close();
 }
 
-void deleteDoubleLines(char* name, int numLines)
+string deleteDoubleLines(char* name)
 {
 	string line, text = "";
 	ifstream infile(name);
-	char name1[] = "newfile.txt";
-	ofstream outfile(name1);
-	if (!infile || !outfile) {
+	if (!infile) {
 		cout << "\nOops! Cannot open the file.\n";
 	}
 	int numOfDeletedLines = 0;
 	while (getline(infile, line)) {
 		int found = text.find(line);
-		if (found == -1)
-			text += line + "\n";
+		if (found == -1) {
+			text += line;
+			if (!infile.eof())
+				text += '\n';
+		}
 		else
 			numOfDeletedLines++;
 	}
 	printf("\n#################\nNumber of deleted lines: %d\n#################\n", numOfDeletedLines);
-	remove(name);
-	outfile << text;
-	outfile.close();
-	outputFile(name1);
+	infile.close();
+	return text;
 }
 
-
+void AfterDeleting(char* name) {
+	string text = deleteDoubleLines(name);
+	ofstream outfile(name);
+	if (!outfile) {
+		cout << "\nOops! Cannot open the file.\n";
+	}
+	outfile << text;
+	outfile.close();
+	printf("\nAfter deleting duplicate lines:");
+	outputFile(name);
+}

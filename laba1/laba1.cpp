@@ -18,7 +18,6 @@ int main(){
 	int n;
 	cout << "\nВведите количество последних рядков: "; cin >> n;
 	createNewFile(input, output, n);
-	deleteDoubleLines(output, n);
-	//cin.get();
+	AfterDeleting(output);
 	return 0;
 }

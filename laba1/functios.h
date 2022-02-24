@@ -8,5 +8,6 @@ void inputFile(char*);
 void outputFile(char*);
 int NumOfLines(char*, int);
 void createNewFile(char*, char*, int);
-void deleteDoubleLines(char*, int);
+string deleteDoubleLines(char*);
+void AfterDeleting(char*);
 
