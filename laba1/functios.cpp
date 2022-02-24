@@ -26,8 +26,11 @@ void outputFile(char* name)
 	}
 	else {
 		string line;
+		printf("\n#################\nFile \"%s\"\n#################\n", name);
 		while (getline(file, line)) {
-			cout << line << endl;
+			cout << line;
+			if (!file.eof())
+				cout << endl;
 		}
 	}
 	file.close();
@@ -66,23 +69,26 @@ void createNewFile(char* name, char* newname, int numLines)
 
 void deleteDoubleLines(char* name, int numLines)
 {
-	string line;
+	string line, text = "";
 	ifstream infile(name);
-	ofstream outfile("outfile.txt");
-	int num = NumOfLines(name, numLines);
-	const char** lines;
-	lines = new const char* [num];
-	while (!infile.eof()) {
-		for (int i = 0; i < num; i++)
-		{
-			string str = lines[i];
-			getline(infile, str);
-			
-			bool found = false;
-		}
+	char name1[] = "newfile.txt";
+	ofstream outfile(name1);
+	if (!infile || !outfile) {
+		cout << "\nOops! Cannot open the file.\n";
 	}
-
-	
+	int numOfDeletedLines = 0;
+	while (getline(infile, line)) {
+		int found = text.find(line);
+		if (found == -1)
+			text += line + "\n";
+		else
+			numOfDeletedLines++;
+	}
+	printf("\n#################\nNumber of deleted lines: %d\n#################\n", numOfDeletedLines);
+	remove(name);
+	outfile << text;
+	outfile.close();
+	outputFile(name1);
 }
 
 
